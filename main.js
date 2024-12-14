@@ -17,13 +17,17 @@ function addExperience(data = {}) {
     const index = experiencesDiv.querySelectorAll('.experience').length;
     const experienceHtml = `
         <div class="experience">
-            <input type="text" id="exp-title-${index}" placeholder="Titre du poste" value="${data.title || ''}">
+            <div class="checkbox-container">
+                <input type="checkbox" id="exp-checkbox-${index}" class="exp-checkbox" data-index="${index}" checked>
+                <input type="text" id="exp-title-${index}" placeholder="Titre du poste" value="${data.title || ''}">
+            </div>
             <input type="text" id="exp-company-${index}" placeholder="Entreprise" value="${data.company || ''}">
             <input type="text" id="exp-dates-${index}" placeholder="Dates" value="${data.dates || ''}">
             <textarea id="exp-description-${index}" placeholder="Description">${data.description || ''}</textarea>
         </div>
     `;
     experiencesDiv.insertAdjacentHTML('beforeend', experienceHtml);
+    document.getElementById(`exp-checkbox-${index}`).addEventListener('change', updatePreview);
 }
 
 // Fonction pour ajouter une nouvelle technologie
@@ -32,11 +36,15 @@ function addTechnology(data = {}) {
     const index = technologiesDiv.querySelectorAll('.technology').length;
     const technologyHtml = `
         <div class="technology">
-            <input type="text" id="tech-name-${index}" placeholder="Nom de la technologie" value="${data.name || ''}">
+            <div class="checkbox-container">
+                <input type="checkbox" id="tech-checkbox-${index}" class="tech-checkbox" data-index="${index}" checked>
+                <input type="text" id="tech-name-${index}" placeholder="Nom de la technologie" value="${data.name || ''}">
+            </div>
             <input type="text" id="tech-level-${index}" placeholder="Niveau (optionnel)" value="${data.level || ''}">
         </div>
     `;
     technologiesDiv.insertAdjacentHTML('beforeend', technologyHtml);
+    document.getElementById(`tech-checkbox-${index}`).addEventListener('change', updatePreview);
 }
 
 // Fonction pour sauvegarder les données du CV
@@ -54,18 +62,19 @@ function saveData() {
         title: document.getElementById(`exp-title-${index}`).value,
         company: document.getElementById(`exp-company-${index}`).value,
         dates: document.getElementById(`exp-dates-${index}`).value,
-        description: document.getElementById(`exp-description-${index}`).value
+        description: document.getElementById(`exp-description-${index}`).value,
+        included: document.getElementById(`exp-checkbox-${index}`).checked
     }));
 
     const technologyDivs = document.querySelectorAll('.technology');
     cvData.technologies = Array.from(technologyDivs).map((tech, index) => ({
         name: document.getElementById(`tech-name-${index}`).value,
-        level: document.getElementById(`tech-level-${index}`).value
+        level: document.getElementById(`tech-level-${index}`).value,
+        included: document.getElementById(`tech-checkbox-${index}`).checked
     }));
 
     localStorage.setItem('cvData', JSON.stringify(cvData));
     updatePreview();
-    updateCheckboxes();
 }
 
 // Fonction pour exporter les données au format JSON
@@ -91,7 +100,6 @@ document.getElementById('import-json').addEventListener('change', function(event
         localStorage.setItem('cvData', JSON.stringify(cvData));
         loadData();
         updatePreview();
-        updateCheckboxes();
     };
     reader.readAsText(file);
 });
@@ -109,86 +117,115 @@ function loadData() {
         document.getElementById('photo-url').value = cvData.personalInfo.photoUrl || '';
 
         document.getElementById('experiences').innerHTML = '';
-        cvData.experiences.forEach((expData) => {
+        cvData.experiences.forEach((expData, index) => {
             addExperience(expData);
+            document.getElementById(`exp-checkbox-${index}`).checked = expData.included;
         });
 
         document.getElementById('technologies').innerHTML = '';
-        cvData.technologies.forEach((techData) => {
+        cvData.technologies.forEach((techData, index) => {
             addTechnology(techData);
+            document.getElementById(`tech-checkbox-${index}`).checked = techData.included;
         });
     }
-}
-
-// Fonction pour mettre à jour les cases à cocher
-function updateCheckboxes() {
-    const expCheckboxes = document.getElementById('experience-checkboxes');
-    const techCheckboxes = document.getElementById('technology-checkboxes');
-
-    expCheckboxes.innerHTML = cvData.experiences.map((exp, index) => 
-        `<label><input type="checkbox" class="exp-checkbox" data-index="${index}" checked> ${exp.title || 'Expérience ' + (index + 1)}</label><br>`
-    ).join('');
-
-    techCheckboxes.innerHTML = cvData.technologies.map((tech, index) =>
-        `<label><input type="checkbox" class="tech-checkbox" data-index="${index}" checked> ${tech.name || 'Technologie ' + (index + 1)}</label><br>`
-    ).join('');
-
-    document.querySelectorAll('.exp-checkbox, .tech-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', updatePreview);
-    });
 }
 
 // Fonction pour mettre à jour la prévisualisation du CV
 function updatePreview() {
     const preview = document.getElementById('cv-preview');
-    const selectedExps = Array.from(document.querySelectorAll('.exp-checkbox:checked')).map(cb => parseInt(cb.dataset.index));
-    const selectedTechs = Array.from(document.querySelectorAll('.tech-checkbox:checked')).map(cb => parseInt(cb.dataset.index));
-
     const info = cvData.personalInfo;
     let previewHtml = `
-        <h2>${info.name}</h2>
-        <p>Email: ${info.email}</p>
-        <p>LinkedIn: <a href="${info.linkedin}" target="_blank">${info.linkedin}</a></p>
-        <p>GitHub: <a href="${info.github}" target="_blank">${info.github}</a></p>
-        <img id="photo" src="${info.photoUrl}" alt="Photo de profil">
+        <div class="cv-header">
+            <img id="photo" src="${info.photoUrl}" alt="Photo de profil">
+            <div class="cv-header-content">
+                <h2>${info.name}</h2>
+                <p><strong>Email:</strong> ${info.email}</p>
+                <p><strong>LinkedIn:</strong> <a href="${info.linkedin}" target="_blank">${info.linkedin}</a></p>
+                <p><strong>GitHub:</strong> <a href="${info.github}" target="_blank">${info.github}</a></p>
+            </div>
+        </div>
         
         <h3>Expériences professionnelles</h3>
     `;
 
-    selectedExps.forEach(index => {
-        const exp = cvData.experiences[index];
-        previewHtml += `
-            <div class="experience">
-                <h4>${exp.title} - ${exp.company}</h4>
-                <p>${exp.dates}</p>
-                <p>${exp.description}</p>
-            </div>
-        `;
+    cvData.experiences.forEach((exp, index) => {
+        if (document.getElementById(`exp-checkbox-${index}`).checked) {
+            previewHtml += `
+                <div class="experience-item">
+                    <h4>${exp.title} - ${exp.company}</h4>
+                    <p class="experience-dates"><em>${exp.dates}</em></p>
+                    <p class="experience-description">${exp.description}</p>
+                </div>
+            `;
+        }
     });
 
-    previewHtml += '<h3>Technologies</h3><ul>';
-    selectedTechs.forEach(index => {
-        const tech = cvData.technologies[index];
-        previewHtml += `<li>${tech.name}${tech.level ? ` - ${tech.level}` : ''}</li>`;
+    previewHtml += '<h3>Technologies</h3><div class="technologies-grid">';
+    cvData.technologies.forEach((tech, index) => {
+        if (document.getElementById(`tech-checkbox-${index}`).checked) {
+            previewHtml += `<div class="technology-item"><strong>${tech.name}</strong>${tech.level ? `<span class="technology-level">${tech.level}</span>` : ''}</div>`;
+        }
     });
-    previewHtml += '</ul>';
+    previewHtml += '</div>';
 
     preview.innerHTML = previewHtml;
 }
 
 // Fonction pour générer le PDF du CV
-function generatePDF() {
+async function generatePDF() {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    html2canvas(document.getElementById('cv-preview')).then(canvas => {
+    const preview = document.getElementById('cv-preview');
+
+    // Fonction pour charger l'image
+    const loadImage = (url) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = url;
+        });
+    };
+
+    try {
+        // Attendre que l'image soit chargée
+        const photoUrl = preview.querySelector('#photo').src;
+        await loadImage(photoUrl);
+
+        // Créer le PDF
+        const pdf = new jsPDF('p', 'pt', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+
+        // Capturer le contenu HTML
+        const canvas = await html2canvas(preview, { useCORS: true, scale: 2 });
         const imgData = canvas.toDataURL('image/png');
-        const imgProps = doc.getImageProperties(imgData);
-        const pdfWidth = doc.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        doc.save('cv.pdf');
-    });
+
+        // Calculer la hauteur proportionnelle
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const ratio = imgWidth / pdfWidth;
+        const pdfHeight = imgHeight / ratio;
+
+        // Ajouter l'image au PDF
+        let heightLeft = pdfHeight;
+        let position = 0;
+
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pdf.internal.pageSize.getHeight();
+
+        // Ajouter des pages supplémentaires si nécessaire
+        while (heightLeft >= 0) {
+            position = heightLeft - pdfHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+            heightLeft -= pdf.internal.pageSize.getHeight();
+        }
+
+        // Sauvegarder le PDF
+        pdf.save('cv.pdf');
+    } catch (error) {
+        console.error('Erreur lors de la génération du PDF:', error);
+        alert('Une erreur est survenue lors de la génération du PDF. Veuillez réessayer.');
+    }
 }
 
 // DEBUT CODE DEV
@@ -204,15 +241,25 @@ async function loadSampleData() {
         localStorage.setItem('cvData', JSON.stringify(data));
         loadData();
         updatePreview();
-        updateCheckboxes();
     } catch (e) {
         console.error('Erreur lors de la récupération des données de test :', e);
     }
 }
 // FIN CODE DEV
 
+// Fonction pour mettre à jour dynamiquement la prévisualisation lors de la saisie
+function setupLivePreview() {
+    const inputs = document.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            saveData();
+            updatePreview();
+        });
+    });
+}
+
 // Chargement initial des données et mise à jour de l'interface
 loadData();
 updatePreview();
-updateCheckboxes();
+setupLivePreview();
 

@@ -9,48 +9,55 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Structure principale de la page -->
-    <h1>Générateur de CV en ligne</h1>
+    <h1 class="page-title">Générateur de CV en ligne</h1>
+    <button class="dev-button" onclick="loadSampleData()">[DEV]</button>
+    <div id="main-container">
+        <div id="form-column">
+            <!-- Section des informations personnelles -->
+            <fieldset>
+                <legend>Informations personnelles</legend>
+                <label for="name">Nom complet:</label>
+                <input type="text" id="name" placeholder="Nom complet">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Email">
+                <label for="linkedin">URL LinkedIn:</label>
+                <input type="url" id="linkedin" placeholder="URL LinkedIn">
+                <label for="github">URL GitHub:</label>
+                <input type="url" id="github" placeholder="URL GitHub">
+                <label for="photo-url">URL de la photo:</label>
+                <input type="url" id="photo-url" placeholder="URL de la photo">
+            </fieldset>
 
-    <!-- Section des informations personnelles -->
-    <h2>Informations personnelles</h2>
-    <input type="text" id="name" placeholder="Nom complet">
-    <input type="email" id="email" placeholder="Email">
-    <input type="url" id="linkedin" placeholder="URL LinkedIn">
-    <input type="url" id="github" placeholder="URL GitHub">
-    <input type="url" id="photo-url" placeholder="URL de la photo">
+            <!-- Section des expériences professionnelles -->
+            <fieldset>
+                <legend>Expériences professionnelles</legend>
+                <div id="experiences"></div>
+                <button onclick="addExperience()">Ajouter une expérience</button>
+            </fieldset>
 
-    <!-- Section des expériences professionnelles -->
-    <h2>Expériences professionnelles</h2>
-    <div id="experiences"></div>
-    <button onclick="addExperience()">Ajouter une expérience</button>
+            <!-- Section des technologies -->
+            <fieldset>
+                <legend>Technologies</legend>
+                <div id="technologies"></div>
+                <button onclick="addTechnology()">Ajouter une technologie</button>
+            </fieldset>
 
-    <!-- Section des technologies -->
-    <h2>Technologies</h2>
-    <div id="technologies"></div>
-    <button onclick="addTechnology()">Ajouter une technologie</button>
-
-    <!-- Boutons d'action -->
-    <h2>Actions</h2>
-    <button onclick="saveData()">Sauvegarder</button>
-    <button onclick="exportJSON()">Exporter JSON</button>
-    <input type="file" id="import-json" accept=".json" style="display: none;">
-    <button onclick="document.getElementById('import-json').click()">Importer JSON</button>
-    <button onclick="generatePDF()">Générer le PDF</button>
+            <!-- Boutons d'action -->
+            <div id="action-buttons" class="action-buttons">
+                <button onclick="saveData()">Sauvegarder</button>
+                <button onclick="exportJSON()">Exporter JSON</button>
+                <input type="file" id="import-json" accept=".json" style="display: none;">
+                <button onclick="document.getElementById('import-json').click()">Importer JSON</button>
+                <button onclick="generatePDF()">Générer le PDF</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Section de prévisualisation du CV -->
-    <h2>Prévisualisation du CV</h2>
-    <div>
-        <h3>Sélectionner les éléments à inclure :</h3>
-        <div id="experience-checkboxes"></div>
-        <div id="technology-checkboxes"></div>
+    <div id="preview-section" class="preview-section">
+        <h2>Prévisualisation du CV</h2>
+        <div id="cv-preview"></div>
     </div>
-    <div id="cv-preview"></div>
-
-    <!-- Bouton de développement pour charger les données de test -->
-    <!-- DEBUT BOUTON DEV -->
-    <button onclick="loadSampleData()">[DEV] Charger les données de test</button>
-    <!-- FIN BOUTON DEV -->
 
     <!-- Chargement du script JavaScript principal -->
     <script src="main.js"></script>

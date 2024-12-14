@@ -1,0 +1,73 @@
+{
+    "personalInfo": {
+      "name": "Jane Dupont",
+      "email": "jane.dupont@example.com",
+      "linkedin": "https://www.linkedin.com/in/janedupont",
+      "github": "https://github.com/janedupont",
+      "photoUrl": "https://picsum.photos/200"
+    },
+    "experiences": [
+      {
+        "title": "Développeuse Front-End",
+        "company": "TechCorp",
+        "dates": "Janvier 2020 - Décembre 2021",
+        "description": "Développement d’interfaces web en React, implémentation de composants réutilisables, optimisation des performances front-end, et collaboration avec l’équipe design."
+      },
+      {
+        "title": "Ingénieure Logiciel",
+        "company": "SoftPlus",
+        "dates": "Février 2018 - Décembre 2019",
+        "description": "Développement d’API REST en Node.js, intégration de bases de données MySQL, rédaction de tests unitaires et CI/CD, et refactoring du code existant pour améliorer la maintenabilité."
+      },
+      {
+        "title": "Stagiaire Développement Web",
+        "company": "WebStart",
+        "dates": "Juin 2017 - Août 2017",
+        "description": "Création de pages web statiques en HTML/CSS, intégration de maquettes, découverte des bases du JavaScript et de la compatibilité entre navigateurs."
+      },
+      {
+        "title": "Chef de Projet Junior",
+        "company": "InnoBiz",
+        "dates": "Mars 2022 - Septembre 2022",
+        "description": "Coordination d’une petite équipe de développeurs, planification et suivi des sprints, communication avec les parties prenantes et présentation des rapports d’avancement."
+      },
+      {
+        "title": "Développeuse Full-Stack Freelance",
+        "company": "Freelance",
+        "dates": "Octobre 2022 - Présent",
+        "description": "Conception et développement de projets full-stack (React/Node.js), mise en place d’architectures front-end et back-end, conseils sur l’UX, et amélioration continue des performances."
+      }
+    ],
+    "technologies": [
+      {
+        "name": "JavaScript",
+        "level": "Avancé"
+      },
+      {
+        "name": "React",
+        "level": "Confirmé"
+      },
+      {
+        "name": "Node.js",
+        "level": "Intermédiaire"
+      },
+      {
+        "name": "HTML/CSS",
+        "level": "Avancé"
+      },
+      {
+        "name": "Git",
+        "level": "Intermédiaire"
+      },
+      {
+        "name": "TypeScript",
+        "level": "Intermédiaire"
+      },
+      {
+        "name": "Redux",
+        "level": "Confirmé"
+      }
+    ]
+  }
+  
+  

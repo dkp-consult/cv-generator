@@ -22,12 +22,14 @@
   
   /* Layout principal */
   #main-container {
-    max-width: 70%;
+    max-width: 80%;
     margin: 0 auto;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    display: flex;
+    flex-direction: row;
   }
   
   #form-column {
@@ -71,16 +73,16 @@
   
   /* Ajustements pour les inputs des informations personnelles */
   #form-column fieldset:first-of-type input {
-    width: 100%;
+    width: 50%;
   }
   
   /* Ajustements pour les inputs des expériences */
   .experience input {
-    width: 100%;
+    width: 50%;
   }
   
   .experience textarea {
-    width: 100%;
+    width: 50%;
     height: 100px;
   }
   

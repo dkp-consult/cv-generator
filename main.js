@@ -17,8 +17,8 @@ function addExperience(data = {}) {
     const index = experiencesDiv.querySelectorAll('.experience').length;
     const experienceHtml = `
         <div class="experience">
+        <input type="checkbox" id="exp-checkbox-${index}" class="exp-checkbox" data-index="${index}" checked>
             <div class="checkbox-container">
-                <input type="checkbox" id="exp-checkbox-${index}" class="exp-checkbox" data-index="${index}" checked>
                 <input type="text" id="exp-title-${index}" placeholder="Titre du poste" value="${data.title || ''}">
             </div>
             <input type="text" id="exp-company-${index}" placeholder="Entreprise" value="${data.company || ''}">
@@ -36,8 +36,8 @@ function addTechnology(data = {}) {
     const index = technologiesDiv.querySelectorAll('.technology').length;
     const technologyHtml = `
         <div class="technology">
+        <input type="checkbox" id="tech-checkbox-${index}" class="tech-checkbox" data-index="${index}" checked>
             <div class="checkbox-container">
-                <input type="checkbox" id="tech-checkbox-${index}" class="tech-checkbox" data-index="${index}" checked>
                 <input type="text" id="tech-name-${index}" placeholder="Nom de la technologie" value="${data.name || ''}">
             </div>
             <input type="text" id="tech-level-${index}" placeholder="Niveau (optionnel)" value="${data.level || ''}">

@@ -37,10 +37,33 @@ function addExperience(data = {}) {
         </div>
     `;
     experiencesDiv.insertAdjacentHTML('beforeend', experienceHtml);
-    document.getElementById(`exp-checkbox-${index}`).addEventListener('change', updatePreview);
+
+    const card = experiencesDiv.lastElementChild; // la dernière carte ajoutée
+    const checkbox = card.querySelector('.exp-checkbox');
+
+    // Empêcher la propagation sur la checkbox
+    checkbox.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Sélectionner tous les inputs et textarea de la carte
+    const fields = card.querySelectorAll('input[type="text"], input[type="url"], input[type="email"], textarea');
+    fields.forEach(field => {
+        field.addEventListener('click', (e) => {
+            e.stopPropagation(); // Empêche le clic sur le champ de toggler la checkbox
+        });
+    });
+
+    // Clic sur la carte -> toggle la checkbox (si ce n'est pas un champ ni la checkbox)
+    card.addEventListener('click', () => {
+        checkbox.checked = !checkbox.checked;
+        updatePreview();
+    });
+
+    // Mise à jour preview si on change la checkbox
+    checkbox.addEventListener('change', updatePreview);
 }
 
-// Ajoute une technologie
 function addTechnology(data = {}) {
     const technologiesDiv = document.getElementById('technologies');
     const index = technologiesDiv.querySelectorAll('.technology-card').length;
@@ -59,7 +82,31 @@ function addTechnology(data = {}) {
         </div>
     `;
     technologiesDiv.insertAdjacentHTML('beforeend', technologyHtml);
-    document.getElementById(`tech-checkbox-${index}`).addEventListener('change', updatePreview);
+
+    const card = technologiesDiv.lastElementChild; // la dernière carte ajoutée
+    const checkbox = card.querySelector('.tech-checkbox');
+
+    // Empêcher la propagation sur la checkbox
+    checkbox.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Sélectionner tous les inputs de la carte
+    const fields = card.querySelectorAll('input[type="text"], input[type="url"], input[type="email"], textarea');
+    fields.forEach(field => {
+        field.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    });
+
+    // Clic sur la carte -> toggle la checkbox (si ce n'est pas un champ ni la checkbox)
+    card.addEventListener('click', () => {
+        checkbox.checked = !checkbox.checked;
+        updatePreview();
+    });
+
+    // Mise à jour preview si on change la checkbox
+    checkbox.addEventListener('change', updatePreview);
 }
 
 // Sauvegarde des données

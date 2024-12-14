@@ -6,36 +6,46 @@
     <title>Générateur de CV en ligne</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1 class="page-title">Générateur de CV en ligne</h1>
-    <button class="dev-button" onclick="loadSampleData()">[DEV]</button>
+    <!-- Bouton dev: à supprimer en production -->
+    <button class="dev-button" onclick="loadSampleData()">[DEV] Charger données de test</button>
+
     <div id="main-container">
         <div id="form-column">
-            <!-- Section des informations personnelles -->
+            <!-- Informations personnelles -->
             <fieldset>
                 <legend>Informations personnelles</legend>
                 <label for="name">Nom complet:</label>
                 <input type="text" id="name" placeholder="Nom complet">
+                
                 <label for="email">Email:</label>
                 <input type="email" id="email" placeholder="Email">
+
+                <label for="gsm">Numéro de GSM:</label>
+                <input type="text" id="gsm" placeholder="Numéro de GSM">
+
                 <label for="linkedin">URL LinkedIn:</label>
                 <input type="url" id="linkedin" placeholder="URL LinkedIn">
+                
                 <label for="github">URL GitHub:</label>
                 <input type="url" id="github" placeholder="URL GitHub">
+                
                 <label for="photo-url">URL de la photo:</label>
                 <input type="url" id="photo-url" placeholder="URL de la photo">
             </fieldset>
 
-            <!-- Section des expériences professionnelles -->
+            <!-- Expériences professionnelles -->
             <fieldset>
                 <legend>Expériences professionnelles</legend>
                 <div id="experiences"></div>
                 <button onclick="addExperience()">Ajouter une expérience</button>
             </fieldset>
 
-            <!-- Section des technologies -->
+            <!-- Technologies -->
             <fieldset>
                 <legend>Technologies</legend>
                 <div id="technologies"></div>
@@ -53,14 +63,12 @@
         </div>
     </div>
 
-    <!-- Section de prévisualisation du CV -->
+    <!-- Prévisualisation du CV -->
     <div id="preview-section" class="preview-section">
         <h2>Prévisualisation du CV</h2>
         <div id="cv-preview"></div>
     </div>
 
-    <!-- Chargement du script JavaScript principal -->
     <script src="main.js"></script>
 </body>
 </html>
-

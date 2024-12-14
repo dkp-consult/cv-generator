@@ -163,7 +163,7 @@ function updatePreview() {
     previewHtml += '<h3>Technologies</h3><div class="technologies-grid">';
     cvData.technologies.forEach((tech, index) => {
         if (document.getElementById(`tech-checkbox-${index}`).checked) {
-            previewHtml += `<div class="technology-item"><strong>${tech.name}</strong>${tech.level ? `<span class="technology-level">${tech.level}</span>` : ''}</div>`;
+            previewHtml += `<div class="technology-item"><strong>${tech.name} : </strong>${tech.level ? `<span class="technology-level">${tech.level}</span>` : ''}</div>`;
         }
     });
     previewHtml += '</div>';

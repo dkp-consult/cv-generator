@@ -12,7 +12,7 @@ let cvData = {
     technologies: []
 };
 
-// Ajoute une expérience
+// Ajoute une expérience (extrait modifié pour la gestion du clic sur la card)
 function addExperience(data = {}) {
     const experiencesDiv = document.getElementById('experiences');
     const index = experiencesDiv.querySelectorAll('.experience-card').length;
@@ -46,15 +46,15 @@ function addExperience(data = {}) {
         e.stopPropagation();
     });
 
-    // Sélectionner tous les inputs et textarea de la carte
+    // Empêcher la propagation sur les champs de saisie
     const fields = card.querySelectorAll('input[type="text"], input[type="url"], input[type="email"], textarea');
     fields.forEach(field => {
         field.addEventListener('click', (e) => {
-            e.stopPropagation(); // Empêche le clic sur le champ de toggler la checkbox
+            e.stopPropagation();
         });
     });
 
-    // Clic sur la carte -> toggle la checkbox (si ce n'est pas un champ ni la checkbox)
+    // Clic sur la carte -> toggle la checkbox
     card.addEventListener('click', () => {
         checkbox.checked = !checkbox.checked;
         updatePreview();
@@ -91,7 +91,7 @@ function addTechnology(data = {}) {
         e.stopPropagation();
     });
 
-    // Sélectionner tous les inputs de la carte
+    // Empêcher la propagation sur les champs de saisie
     const fields = card.querySelectorAll('input[type="text"], input[type="url"], input[type="email"], textarea');
     fields.forEach(field => {
         field.addEventListener('click', (e) => {
@@ -99,7 +99,7 @@ function addTechnology(data = {}) {
         });
     });
 
-    // Clic sur la carte -> toggle la checkbox (si ce n'est pas un champ ni la checkbox)
+    // Clic sur la carte -> toggle la checkbox
     card.addEventListener('click', () => {
         checkbox.checked = !checkbox.checked;
         updatePreview();
@@ -200,9 +200,11 @@ function updatePreview() {
     const info = cvData.personalInfo;
     let previewHtml = `
         <div class="cv-header">
-            <img id="photo" src="${info.photoUrl}" alt="Photo de profil">
-            <div class="cv-header-content">
+            <div class="cv-header-left">
+                <img id="photo" src="${info.photoUrl}" alt="Photo de profil">
                 <h2>${info.name}</h2>
+            </div>
+            <div class="cv-header-right">
                 <p><strong>Email:</strong> ${info.email}</p>
                 <p><strong>GSM:</strong> ${info.gsm}</p>
                 <p><strong>LinkedIn:</strong> <a href="${info.linkedin}" target="_blank">${info.linkedin}</a></p>
@@ -236,54 +238,18 @@ function updatePreview() {
     preview.innerHTML = previewHtml;
 }
 
-// Génération du PDF avec marges et bonne gestion du contenu
+// Génération du PDF (html2pdf)
 async function generatePDF() {
-    const preview = document.getElementById('cv-preview');
-
-    // Marges plus importantes (1 pouce environ)
-    const marginLeft = 40;   // ~0.56 cm
-    const marginTop = 72;    // ~2.54 cm
-    const marginRight = 40;
-    const marginBottom = 72; // ~2.54 cm
-
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('p', 'pt', 'a4');
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-
-    const contentWidth = pageWidth - marginLeft - marginRight;
-    const contentHeight = pageHeight - marginTop - marginBottom;
-
-    // Réduire le scale pour limiter la hauteur de l'image
-    // Par exemple scale: 1.5 au lieu de 2 pour essayer de contenir plus de contenu sur la page
-    const canvas = await html2canvas(preview, { useCORS: true, scale: 1.5 });
-    const imgData = canvas.toDataURL('image/png');
-
-    const imgWidth = canvas.width;
-    const imgHeight = canvas.height;
-
-    // Adapter l'image à la largeur disponible
-    const ratio = imgWidth / contentWidth;
-    const pdfHeight = imgHeight / ratio;
-
-    // Ajouter la première portion
-    pdf.addImage(imgData, 'PNG', marginLeft, marginTop, contentWidth, pdfHeight);
-
-    let heightLeft = pdfHeight - contentHeight;
-
-    // Si le contenu dépasse, ajouter des pages
-    while (heightLeft > 0) {
-        pdf.addPage();
-        // position de la portion suivante
-        const position = marginTop - (pdfHeight - heightLeft);
-        pdf.addImage(imgData, 'PNG', marginLeft, position, contentWidth, pdfHeight);
-        heightLeft -= contentHeight;
-    }
-
-    pdf.save('cv.pdf');
+    const element = document.getElementById('cv-preview');
+    const opt = {
+        margin:       10,       
+        filename:     'cv.pdf',
+        image:        { type: 'png', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().from(element).set(opt).save();
 }
-
-
 
 // Chargement des données de test (dev)
 async function loadSampleData() {
@@ -294,11 +260,6 @@ async function loadSampleData() {
             return;
         }
         const data = await response.json();
-        
-        // Cocher toutes les cases à cocher
-        data.experiences.forEach(exp => exp.included = true);
-        data.technologies.forEach(tech => tech.included = true);
-
         localStorage.setItem('cvData', JSON.stringify(data));
         loadData();
         updatePreview();

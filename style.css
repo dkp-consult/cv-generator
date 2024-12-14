@@ -225,6 +225,32 @@ button:focus {
   border: 3px solid var(--primary-color);
 }
 
+/* Zone d'entête du CV (photo + nom à gauche, infos à droite) */
+.cv-header {
+  display: flex;
+  align-items: center;
+  gap: 75px;
+  margin-bottom: 20px;
+  
+}
+
+.cv-header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cv-header-left h2 {
+  margin-top: 10px;
+}
+
+.cv-header-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
 /* Impression */
 @media print {
   body {

@@ -18,9 +18,10 @@ function addExperience(data = {}) {
     const index = experiencesDiv.querySelectorAll('.experience-card').length;
 
     const experienceHtml = `
-        <div class="experience-card">
+        <div class="experience-card" id="experience-card-${index}">
             <div class="checkbox-container">
                 <input type="checkbox" id="exp-checkbox-${index}" class="exp-checkbox" data-index="${index}" checked>
+                <button type="button" class="delete-button" onclick="deleteExperience(${index})">Supprimer</button>
             </div>
 
             <label for="exp-title-${index}">Titre du poste</label>
@@ -69,9 +70,10 @@ function addTechnology(data = {}) {
     const index = technologiesDiv.querySelectorAll('.technology-card').length;
 
     const technologyHtml = `
-        <div class="technology-card">
+        <div class="technology-card" id="technology-card-${index}">
             <div class="checkbox-container">
                 <input type="checkbox" id="tech-checkbox-${index}" class="tech-checkbox" data-index="${index}" checked>
+                <button type="button" class="delete-button" onclick="deleteTechnology(${index})">Supprimer</button>
             </div>
 
             <label for="tech-name-${index}">Nom de la technologie</label>
@@ -356,3 +358,17 @@ function setupLivePreview() {
 loadData();
 updatePreview();
 setupLivePreview();
+
+function deleteExperience(index) {
+    document.getElementById(`experience-card-${index}`).remove();
+    cvData.experiences.splice(index, 1);
+    saveData();
+    updatePreview();
+}
+
+function deleteTechnology(index) {
+    document.getElementById(`technology-card-${index}`).remove();
+    cvData.technologies.splice(index, 1);
+    saveData();
+    updatePreview();
+}

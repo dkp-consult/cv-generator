@@ -19,22 +19,25 @@ function addExperience(data = {}) {
 
     const experienceHtml = `
         <div class="experience-card" id="experience-card-${index}">
-            <div class="checkbox-container">
+            <div class="experience-summary" onclick="toggleExperienceDetails(${index})">
                 <input type="checkbox" id="exp-checkbox-${index}" class="exp-checkbox" data-index="${index}" checked>
-                <button type="button" class="delete-button" onclick="deleteExperience(${index})">Supprimer</button>
+                <h4>${data.title || 'Titre du poste'} - ${data.company || 'Entreprise'}</h4>
+                <button type="button" class="delete-button" onclick="deleteExperience(${index}); event.stopPropagation();">Supprimer</button>
             </div>
 
-            <label for="exp-title-${index}">Titre du poste</label>
-            <input type="text" id="exp-title-${index}" placeholder="Titre du poste" value="${data.title || ''}">
+            <div class="experience-details" id="experience-details-${index}" style="display: none;">
+                <label for="exp-title-${index}">Titre du poste</label>
+                <input type="text" id="exp-title-${index}" placeholder="Titre du poste" value="${data.title || ''}">
 
-            <label for="exp-company-${index}">Entreprise</label>
-            <input type="text" id="exp-company-${index}" placeholder="Entreprise" value="${data.company || ''}">
+                <label for="exp-company-${index}">Entreprise</label>
+                <input type="text" id="exp-company-${index}" placeholder="Entreprise" value="${data.company || ''}">
 
-            <label for="exp-dates-${index}">Dates</label>
-            <input type="text" id="exp-dates-${index}" placeholder="Dates" value="${data.dates || ''}">
+                <label for="exp-dates-${index}">Dates</label>
+                <input type="text" id="exp-dates-${index}" placeholder="Dates" value="${data.dates || ''}">
 
-            <label for="exp-description-${index}">Description</label>
-            <textarea id="exp-description-${index}" placeholder="Description">${data.description || ''}</textarea>
+                <label for="exp-description-${index}">Description</label>
+                <textarea id="exp-description-${index}" placeholder="Description">${data.description || ''}</textarea>
+            </div>
         </div>
     `;
     experiencesDiv.insertAdjacentHTML('beforeend', experienceHtml);
@@ -55,32 +58,40 @@ function addExperience(data = {}) {
         });
     });
 
-    // Clic sur la carte -> toggle la checkbox (si ce n'est pas un champ ni la checkbox)
-    card.addEventListener('click', () => {
-        checkbox.checked = !checkbox.checked;
-        updatePreview();
-    });
-
     // Mise à jour preview si on change la checkbox
     checkbox.addEventListener('change', updatePreview);
 }
 
+// Fonction pour afficher/masquer les détails de l'expérience
+function toggleExperienceDetails(index) {
+    const details = document.getElementById(`experience-details-${index}`);
+    if (details.style.display === 'none') {
+        details.style.display = 'block';
+    } else {
+        details.style.display = 'none';
+    }
+}
+
+// Ajoute une technologie
 function addTechnology(data = {}) {
     const technologiesDiv = document.getElementById('technologies');
     const index = technologiesDiv.querySelectorAll('.technology-card').length;
 
     const technologyHtml = `
         <div class="technology-card" id="technology-card-${index}">
-            <div class="checkbox-container">
+            <div class="technology-summary" onclick="toggleTechnologyDetails(${index})">
                 <input type="checkbox" id="tech-checkbox-${index}" class="tech-checkbox" data-index="${index}" checked>
-                <button type="button" class="delete-button" onclick="deleteTechnology(${index})">Supprimer</button>
+                <h4>${data.name || 'Nom de la technologie'}</h4>
+                <button type="button" class="delete-button" onclick="deleteTechnology(${index}); event.stopPropagation();">Supprimer</button>
             </div>
 
-            <label for="tech-name-${index}">Nom de la technologie</label>
-            <input type="text" id="tech-name-${index}" placeholder="Technologie" value="${data.name || ''}">
+            <div class="technology-details" id="technology-details-${index}" style="display: none;">
+                <label for="tech-name-${index}">Nom de la technologie</label>
+                <input type="text" id="tech-name-${index}" placeholder="Technologie" value="${data.name || ''}">
 
-            <label for="tech-level-${index}">Niveau (optionnel)</label>
-            <input type="text" id="tech-level-${index}" placeholder="Niveau" value="${data.level || ''}">
+                <label for="tech-level-${index}">Niveau (optionnel)</label>
+                <input type="text" id="tech-level-${index}" placeholder="Niveau" value="${data.level || ''}">
+            </div>
         </div>
     `;
     technologiesDiv.insertAdjacentHTML('beforeend', technologyHtml);
@@ -101,14 +112,18 @@ function addTechnology(data = {}) {
         });
     });
 
-    // Clic sur la carte -> toggle la checkbox (si ce n'est pas un champ ni la checkbox)
-    card.addEventListener('click', () => {
-        checkbox.checked = !checkbox.checked;
-        updatePreview();
-    });
-
     // Mise à jour preview si on change la checkbox
     checkbox.addEventListener('change', updatePreview);
+}
+
+// Fonction pour afficher/masquer les détails de la technologie
+function toggleTechnologyDetails(index) {
+    const details = document.getElementById(`technology-details-${index}`);
+    if (details.style.display === 'none') {
+        details.style.display = 'block';
+    } else {
+        details.style.display = 'none';
+    }
 }
 
 // Sauvegarde des données

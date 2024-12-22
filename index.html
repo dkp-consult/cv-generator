@@ -4,19 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Générateur de CV en ligne</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1 class="page-title">Générateur de CV en ligne</h1>
-    <!-- Bouton dev: à supprimer en production -->
-    <button class="dev-button" onclick="loadSampleData()">[DEV] Charger données de test</button>
+    <header>
+        <nav>
+            <div class="logo">CV Generator</div>
+            <!-- <ul class="nav-links">
+                <li><a href="#form-column">Formulaire</a></li>
+                <li><a href="#preview-section">Prévisualisation</a></li>
+                <li><a href="#footer">Contact</a></li>
+            </ul> -->
+        </nav>
+        <div id="action-buttons" class="action-buttons">
+            <button onclick="saveData()">Sauvegarder</button>
+            <button onclick="exportJSON()">Exporter JSON</button>
+            <input type="file" id="import-json" accept=".json" style="display: none;">
+            <button onclick="document.getElementById('import-json').click()">Importer JSON</button>
+            <button onclick="generatePDF()">Générer le PDF</button>
+            <button onclick="generateHTML()">Générer le HTML</button>
+        </div>
+    </header>
 
-    <div id="main-container">
-        <div id="form-column">
+    <main id="main-container">
+        <section id="form-column">
             <!-- Informations personnelles -->
             <fieldset>
                 <legend>Informations personnelles</legend>
@@ -43,33 +54,27 @@
             <fieldset>
                 <legend>Expériences professionnelles</legend>
                 <div id="experiences"></div>
-                <button onclick="addExperience()">Ajouter une expérience</button>
+                <button type="button" onclick="addExperience()">Ajouter une expérience</button>
             </fieldset>
 
             <!-- Technologies -->
             <fieldset>
                 <legend>Technologies</legend>
                 <div id="technologies"></div>
-                <button onclick="addTechnology()">Ajouter une technologie</button>
+                <button type="button" onclick="addTechnology()">Ajouter une technologie</button>
             </fieldset>
+        </section>
 
-            <!-- Boutons d'action -->
-            <div id="action-buttons" class="action-buttons">
-                <button onclick="saveData()">Sauvegarder</button>
-                <button onclick="exportJSON()">Exporter JSON</button>
-                <input type="file" id="import-json" accept=".json" style="display: none;">
-                <button onclick="document.getElementById('import-json').click()">Importer JSON</button>
-                <button onclick="generatePDF()">Générer le PDF</button>
-                <button onclick="generateHTML()">Générer le HTML</button>
-            </div>
-        </div>
-    </div>
+        <!-- Prévisualisation du CV -->
+        <section id="preview-section" class="preview-section">
+            <h2>Prévisualisation du CV</h2>
+            <div id="cv-preview"></div>
+        </section>
+    </main>
 
-    <!-- Prévisualisation du CV -->
-    <div id="preview-section" class="preview-section">
-        <h2>Prévisualisation du CV</h2>
-        <div id="cv-preview"></div>
-    </div>
+    <footer id="footer">
+        <p>&copy; 2023 CV Generator. Tous droits réservés.</p>
+    </footer>
 
     <script src="main.js"></script>
 </body>

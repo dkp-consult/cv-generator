@@ -11,51 +11,84 @@ body {
   font-family: 'Roboto', Arial, sans-serif;
   line-height: 1.6;
   margin: 0;
-  padding: 20px;
+  padding: 0;
   background-color: var(--background-color);
   color: var(--text-color);
 }
 
-h1, h2, h3, h4 {
-  color: var(--primary-color);
-}
-
-.page-title {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.dev-button {
-  background-color: #e67e22;
-  border: none;
-  border-radius: 5px;
+header {
+  background-color: var(--primary-color);
   color: white;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-bottom: 20px;
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
 }
 
-.dev-button:hover {
-  background-color: #d35400;
-}
-
-/* Layout principal */
-#main-container {
-  max-width: 80%;
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
   margin: 0 auto;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  padding: 0 20px;
+}
+
+.logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin : 0 auto;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1em;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--secondary-color);
+}
+
+#action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+#main-container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  padding-top: 120px;
+  max-width: 1600px;
+  margin: 50px auto; /* Ajuster la marge supérieure et inférieure pour éviter le chevauchement avec le header et le footer */
 }
 
-#form-column {
-  padding: 30px;
+#form-column, #preview-section {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  flex: 1;
+  margin: 10px;
+  max-width: 48%; /* Ajuster la largeur pour les deux colonnes */
 }
 
-/* Formulaire */
 fieldset {
   border: none;
   margin-bottom: 30px;
@@ -75,18 +108,15 @@ label {
   color: var(--text-color);
 }
 
-/* Ajustement des inputs pour s'adapter au contenu */
 input, textarea {
-  padding: 5px 10px;
+  width: 100%;
+  padding: 10px;
   border: 1px solid var(--border-color);
   border-radius: 5px;
   font-size: 14px;
   transition: border-color 0.3s ease;
-  width: fit-content;
-  min-width: 200px;
-  box-sizing: border-box;
   margin-bottom: 15px;
-  display: block;
+  box-sizing: border-box;
 }
 
 input:focus, textarea:focus {
@@ -94,51 +124,6 @@ input:focus, textarea:focus {
   border-color: var(--primary-color);
 }
 
-.action-buttons {
-  margin-top: 20px;
-}
-
-/* Conteneur des expériences et des technologies en flex */
-#experiences, #technologies {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-#experiences-description > textarea {
-  min-width: 1000px;
-}
-
-/* Styles des "cards" */
-.experience-card, .technology-card {
-  background-color: #fff;
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 250px;
-}
-
-.experience-card:hover, .technology-card:hover {
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-}
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.checkbox-container input[type="checkbox"] {
-  width: auto;
-}
-
-/* Boutons */
 button {
   background-color: var(--primary-color);
   color: white;
@@ -161,13 +146,8 @@ button:focus {
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.5);
 }
 
-/* Prévisualisation du CV */
 #preview-section {
-  margin-top: 40px;
-  width: 100%;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 48%; /* Ajuster la largeur pour les deux colonnes */
 }
 
 #cv-preview {
@@ -231,7 +211,6 @@ button:focus {
   align-items: center;
   gap: 75px;
   margin-bottom: 20px;
-  
 }
 
 .cv-header-left {
@@ -250,42 +229,55 @@ button:focus {
   justify-content: flex-start;
 }
 
+/* Footer */
+footer {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  
+  width: 100%;
+  bottom: 0;
+}
+
+footer p {
+  margin: 0;
+}
 
 /* Impression */
 @media print {
   body {
-      background-color: white;
-      margin: 0;
-      padding: 0;
+    background-color: white;
+    margin: 0;
+    padding: 0;
   }
-  #main-container, #action-buttons, h1, .dev-button {
-      display: none;
+  #main-container, #action-buttons, header, footer {
+    display: none;
   }
   #preview-section {
-      margin-top: 0;
+    margin-top: 0;
   }
   #cv-preview {
-      box-shadow: none;
-      border: none;
-      padding: 0;
-      max-width: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    max-width: none;
   }
 }
 
 /* Responsive */
 @media (max-width: 1200px) {
   #main-container {
-      max-width: 90%;
+    flex-direction: column;
   }
 }
 
 @media (max-width: 768px) {
   #main-container {
-      max-width: 100%;
-      flex-direction: column;
+    padding: 10px;
   }
-  .experience-card, .technology-card {
-      flex: 1 1 100%;
-      min-width: auto;
+  #form-column, #preview-section {
+    margin: 10px 0;
+    max-width: 100%;
   }
 }

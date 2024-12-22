@@ -283,7 +283,41 @@ async function generatePDF() {
     pdf.save('cv.pdf');
 }
 
+// Génération du fichier HTML avec le rendu du CV
+async function generateHTML() {
+    const preview = document.getElementById('cv-preview').innerHTML;
+     // Récupérer le contenu du fichier CSS
+     const cssResponse = await fetch('style.css');
+     const cssContent = await cssResponse.text();
 
+    const htmlContent = `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV de ${cvData.personalInfo.name}</title>
+    <style>
+    ${cssContent}
+    </style>
+</head>
+<body>
+    <div id="cv-preview">
+        ${preview}
+    </div>
+</body>
+</html>
+    `;
+
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cv-${cvData.personalInfo.name}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
 
 // Chargement des données de test (dev)
 async function loadSampleData() {

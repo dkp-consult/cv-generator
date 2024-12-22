@@ -255,6 +255,8 @@ button:focus {
 @media print {
   body {
       background-color: white;
+      margin: 0;
+      padding: 0;
   }
   #main-container, #action-buttons, h1, .dev-button {
       display: none;
